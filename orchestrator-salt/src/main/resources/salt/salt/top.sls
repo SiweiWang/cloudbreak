@@ -27,6 +27,10 @@ base:
     - match: grain
     - ambari.agent
 
+#  'roles:ambari_server':
+#    - match: grain
+#    - gateway
+
   'roles:smartsense':
     - match: grain
     - smartsense
