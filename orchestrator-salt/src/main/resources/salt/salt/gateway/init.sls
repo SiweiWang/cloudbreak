@@ -3,11 +3,6 @@
 knox:
   pkg.installed
 
-start-demo-ldap:
-  cmd.run:
-    - name: /usr/hdp/current/knox-server/bin/ldap.sh start
-    - user: knox
-
 knox-master-secret:
   cmd.run:
     - name: /usr/hdp/current/knox-server/bin/knoxcli.sh create-master --master admin
@@ -30,6 +25,22 @@ knox-create-cert:
 
 {% if gateway.is_systemd %}
 
+/etc/systemd/system/knox-ldap.service:
+  file.managed:
+    - source: salt://gateway/systemd/knox-ldap.service
+
+start-knox-ldap:
+  module.wait:
+    - name: service.systemctl_reload
+    - watch:
+      - file: /etc/systemd/system/knox-ldap.service
+  service.running:
+    - enable: True
+    - name: knox-ldap
+    - watch:
+       - file: /etc/systemd/system/knox-ldap.service
+
+
 /etc/systemd/system/knox-gateway.service:
   file.managed:
     - source: salt://gateway/systemd/knox-gateway.service
@@ -49,11 +60,8 @@ start-knox-gateway:
 {% endif %}
 
 
-
 #salt -G 'roles:ambari_server' state.apply gateway
-
-#cd /usr/hdp/current/knox-server/; bin/gateway.sh start
 
 #curl -iku guest:guest-password -X GET 'https://localhost:8443/gateway/hdc/webhdfs/v1/?op=LISTSTATUS'
 
-#rm -rfv /srv/salt/gateway; cp -rv /home/cloudbreak/gateway /srv/salt/
+#rm -rfv /srv/salt/gateway; cp -rv /home/cloudbreak/gateway /srv/salt/; rm -rfv /home/cloudbreak/gateway
