@@ -43,6 +43,12 @@ disable_agent_cache_update:
     - text: agent.auto.cache.update=false
     - unless: cat /etc/ambari-server/conf/ambari.properties | grep agent.auto.cache.update
 
+provision_action_based_on_real_dependencies:
+  file.append:
+    - name: /etc/ambari-server/conf/ambari.properties
+    - text: server.stage.command.execution_type=DEPENDENCY_ORDERED
+    - unless: cat /etc/ambari-server/conf/ambari.properties | grep server.stage.command.execution_type
+
 {% endif %}
 
 {% if ambari.ambari_database.vendor == 'mysql' %}
