@@ -25,11 +25,11 @@ install_mysql:
       - mysql55-server
       - mysql
 
-packages_pre_installed:
-  file.append:
-    - name: /etc/ambari-server/conf/ambari.properties
-    - text: packages.pre.installed=true
-    - unless: cat /etc/ambari-server/conf/ambari.properties | grep packages.pre.installed
+#packages_pre_installed:
+#  file.append:
+#    - name: /etc/ambari-server/conf/ambari.properties
+#    - text: packages.pre.installed=true
+#    - unless: cat /etc/ambari-server/conf/ambari.properties | grep packages.pre.installed
 
 parallel_topology_task_execution:
   file.append:
