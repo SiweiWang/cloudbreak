@@ -56,14 +56,21 @@ public class ClusterService {
         ClusterState newState = clusterState != null ? clusterState : cluster.getState();
         cluster.setState(newState);
         cluster.update(stack);
-        cluster = save(cluster);
-        if (stack.getSecurityConfig() != null) {
-            SecurityConfig updatedConfig = stack.getSecurityConfig();
+        SecurityConfig sSecConf = stack.getSecurityConfig();
+        if (sSecConf != null) {
+            SecurityConfig updatedConfig = sSecConf;
             SecurityConfig securityConfig = securityConfigRepository.findByClusterId(clusterId);
-            securityConfig.update(updatedConfig);
-            securityConfigRepository.save(securityConfig);
+            if (securityConfig != null) {
+                securityConfig.update(updatedConfig);
+                securityConfigRepository.save(securityConfig);
+            } else {
+                SecurityConfig sc = new SecurityConfig(sSecConf.getClientKey(), sSecConf.getClientCert(), sSecConf.getServerCert());
+                sc.setCluster(cluster);
+                sc = securityConfigRepository.save(sc);
+                cluster.setSecurityConfig(sc);
+            }
         }
-        return cluster;
+        return save(cluster);
     }
 
     public List<Cluster> findAllByUser(PeriscopeUser user) {
