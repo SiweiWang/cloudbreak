@@ -38,6 +38,6 @@ objectclass:organizationalPerson
 objectclass:inetOrgPerson
 cn: Admin
 sn: Admin
-uid: admin
-userPassword:admin-password
+uid: {{ salt['pillar.get']('gateway:username') }}
+userPassword: {{ salt['pillar.get']('gateway:password') }}
 

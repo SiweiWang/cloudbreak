@@ -70,7 +70,7 @@
 
     </gateway>
 
-    <!-- curl -iku admin:admin-password -X GET 'https://172.21.250.115:8443/gateway/hdc/webhdfs/v1/?op=LISTSTATUS' -->
+    <!-- curl -iku {{ salt['pillar.get']('ambari:username') }}:{{ salt['pillar.get']('ambari:password') }} -X GET 'https://{{ salt['pillar.get']('gateway:address') }}:8443/gateway/hdc/webhdfs/v1/?op=LISTSTATUS' -->
 
     <service>
         <role>WEBHDFS</role>
@@ -84,35 +84,35 @@
 
     <!-- UI -->
 
-    <!-- https://172.21.250.115:8443/gateway/hdc/hdfs/ -->
+    <!-- https://{{ salt['pillar.get']('gateway:address') }}:8443/gateway/hdc/hdfs/ -->
 
     <service>
         <role>HDFSUI</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:50070</url>
     </service>
 
-    <!-- https://172.21.250.115:8443/gateway/hdc/ambari/ -->
+    <!-- https://{{ salt['pillar.get']('gateway:address') }}:8443/gateway/hdc/ambari/ -->
 
     <service>
         <role>AMBARIUI</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:8080</url>
     </service>
 
-    <!-- https://172.21.250.115:8443/gateway/hdc/yarn/ -->
+    <!-- https://{{ salt['pillar.get']('gateway:address') }}:8443/gateway/hdc/yarn/ -->
 
     <service>
         <role>YARNUI</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:8088</url>
     </service>
 
-    <!-- https://172.21.250.115:8443/gateway/hdc/jobhistory/ -->
+    <!-- https://{{ salt['pillar.get']('gateway:address') }}:8443/gateway/hdc/jobhistory/ -->
 
     <service>
         <role>JOBHISTORYUI</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:19888</url>
     </service>
 
-    <!-- https://172.21.250.115:8443/gateway/hdc/sparkhistory/ -->
+    <!-- https://{{ salt['pillar.get']('gateway:address') }}:8443/gateway/hdc/sparkhistory/ -->
 
     <service>
         <role>SPARKHISTORYUI</role>
