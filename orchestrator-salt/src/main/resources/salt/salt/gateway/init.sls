@@ -15,9 +15,19 @@ knox-create-cert:
     - user: knox
     - creates: /usr/hdp/current/knox-server/data/security/keystores/gateway.jks
 
+/usr/hdp/current/knox-server/conf/users.ldif:
+  file.managed:
+    - source: salt://gateway/config/users.ldif.j2
+    - template: jinja
+
+/usr/hdp/current/knox-server/conf/gateway-site.xml:
+  file.managed:
+    - source: salt://gateway/config/gateway-site.xml.j2
+    - template: jinja
+
 /usr/hdp/current/knox-server/conf/topologies/hdc.xml:
   file.managed:
-    - source: salt://gateway/config/hdc.xml
+    - source: salt://gateway/config/hdc.xml.j2
     - template: jinja
     - user: knox
     - group: knox

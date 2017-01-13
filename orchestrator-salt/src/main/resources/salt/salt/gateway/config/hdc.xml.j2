@@ -70,62 +70,50 @@
 
     </gateway>
 
-    <service>
-        <role>NAMENODE</role>
-        <url>hdfs://{{ salt['grains.get']('fqdn') }}:8020</url>
-    </service>
-    <service>
-        <role>JOBTRACKER</role>
-        <url>rpc://{{ salt['grains.get']('fqdn') }}:8050</url>
-    </service>
+    <!-- curl -iku admin:admin-password -X GET 'https://172.21.250.115:8443/gateway/hdc/webhdfs/v1/?op=LISTSTATUS' -->
+
     <service>
         <role>WEBHDFS</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:50070/webhdfs</url>
     </service>
-    <service>
-        <role>WEBHCAT</role>
-        <url>http://{{ salt['grains.get']('fqdn') }}:50111/templeton</url>
-    </service>
-    <service>
-        <role>OOZIE</role>
-        <url>http://None:11000/oozie</url>
-    </service>
-    <service>
-        <role>WEBHBASE</role>
-        <url>http://None:8080</url>
-    </service>
-    <service>
-        <role>HIVE</role>
-        <url>http://{{ salt['grains.get']('fqdn') }}:10001/cliservice</url>
-    </service>
-    <service>
-        <role>RESOURCEMANAGER</role>
-        <url>http://{{ salt['grains.get']('fqdn') }}:8088/ws</url>
-    </service>
+
     <service>
         <role>AMBARI</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:8080</url>
     </service>
+
+    <!-- UI -->
+
+    <!-- https://172.21.250.115:8443/gateway/hdc/hdfs/ -->
+
     <service>
         <role>HDFSUI</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:50070</url>
     </service>
+
+    <!-- https://172.21.250.115:8443/gateway/hdc/ambari/ -->
+
+    <service>
+        <role>AMBARIUI</role>
+        <url>http://{{ salt['grains.get']('fqdn') }}:8080</url>
+    </service>
+
+    <!-- https://172.21.250.115:8443/gateway/hdc/yarn/ -->
+
     <service>
         <role>YARNUI</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:8088</url>
     </service>
-    <service>
-        <role>HBASEUI</role>
-        <url>http://{{ salt['grains.get']('fqdn') }}:16010</url>
-    </service>
-    <service>
-        <role>OOZIEUI</role>
-        <url>http://{{ salt['grains.get']('fqdn') }}:11000/oozie/</url>
-    </service>
+
+    <!-- https://172.21.250.115:8443/gateway/hdc/jobhistory/ -->
+
     <service>
         <role>JOBHISTORYUI</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:19888</url>
     </service>
+
+    <!-- https://172.21.250.115:8443/gateway/hdc/sparkhistory/ -->
+
     <service>
         <role>SPARKHISTORYUI</role>
         <url>http://{{ salt['grains.get']('fqdn') }}:18080/</url>

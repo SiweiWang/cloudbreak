@@ -40,6 +40,7 @@ import com.sequenceiq.cloudbreak.repository.StackRepository;
 import com.sequenceiq.cloudbreak.service.ComponentConfigProvider;
 import com.sequenceiq.cloudbreak.service.GatewayConfigService;
 import com.sequenceiq.cloudbreak.service.blueprint.BlueprintUtils;
+import com.sequenceiq.cloudbreak.service.cluster.AmbariAuthenticationProvider;
 import com.sequenceiq.cloudbreak.service.cluster.ClusterService;
 
 @Component
@@ -67,6 +68,9 @@ public class ClusterHostServiceRunner {
     private InstanceMetaDataRepository instanceMetaDataRepository;
 
     @Inject
+    private AmbariAuthenticationProvider ambariAuthenticationProvider;
+
+    @Inject
     private ComponentConfigProvider componentConfigProvider;
 
     @Inject
@@ -92,6 +96,10 @@ public class ClusterHostServiceRunner {
                 servicePillar.put("kerberos", new SaltPillarProperties("/kerberos/init.sls", krb));
             }
             servicePillar.put("discovery", new SaltPillarProperties("/discovery/init.sls", singletonMap("platform", stack.cloudPlatform())));
+            Map<String, Object> credentials = new HashMap<>();
+            credentials.put("username", ambariAuthenticationProvider.getAmbariUserName(stack.getCluster()));
+            credentials.put("password", ambariAuthenticationProvider.getAmbariPassword(stack.getCluster()));
+            servicePillar.put("ambari-credentials", new SaltPillarProperties("/ambari/credentials.sls", singletonMap("ambari", credentials)));
             AmbariRepo ambariRepo = componentConfigProvider.getAmbariRepo(stack.getId());
             if (ambariRepo != null) {
                 servicePillar.put("ambari-repo", new SaltPillarProperties("/ambari/repo.sls", singletonMap("ambari", singletonMap("repo", ambariRepo))));
